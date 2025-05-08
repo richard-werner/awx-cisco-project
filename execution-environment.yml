@@ -1,0 +1,16 @@
+version: 1
+
+build_arg_defaults:
+  EE_BASE_IMAGE: quay.io/ansible/awx-ee:latest
+
+dependencies:
+  python: requirements.txt
+  system: bindep.txt
+  galaxy: requirements.yml
+
+additional_build_files:
+  - src: ee/files/
+    dest: /etc/ansible/configs/
+
+options:
+  package_manager_path: /usr/bin/microdnf
