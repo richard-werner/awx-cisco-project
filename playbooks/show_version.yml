@@ -7,11 +7,12 @@
         commands:
           - show version
       register: version_output
+      no_log: true
 
     - name: Extract version line
       set_fact:
         ios_version_line: "{{ version_output.stdout[0].split('\n') | select('search', '^Cisco IOS Software') | list | first }}"
-
+      no_log: true
     - name: Display just the version line
       debug:
         msg: "Switch is running: {{ ios_version_line }}"
