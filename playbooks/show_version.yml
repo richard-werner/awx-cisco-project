@@ -1,15 +1,17 @@
-- name: Cisco Show Version
+- name: Show version on Cisco devices
   hosts: all
   gather_facts: no
-  collections:
-    - cisco.ios
   tasks:
     - name: Run 'show version'
-      ios_command:
+      cisco.ios.ios_command:
         commands:
           - show version
       register: version_output
 
-    - name: Display output
+    - name: Extract version line
+      set_fact:
+        ios_version_line: "{{ version_output.stdout[0].split('\n') | select('search', '^Cisco IOS Software') | list | first }}"
+
+    - name: Display just the version line
       debug:
-        var: version_output.stdout_lines
+        msg: "Switch is running: {{ ios_version_line }}"
